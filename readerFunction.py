@@ -11,7 +11,7 @@ else:
     print  "Algo salio mal al conectar con el archivo"
 
 
-for index,row in enumerate(reader):
+for row in reader:
 
     print  "Beat: "+ row[3] + "Grid: " + row[4] 
     print "\n"
