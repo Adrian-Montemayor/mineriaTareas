@@ -35,6 +35,7 @@ readData('crimes.csv')
 
 #Lista con los distritos. ['Distrito', CantidadDeCrimenes, PromedioDeGravedadDeCrimenes]
 distritos = [['1', 0, 0], ['2', 0, 0], ['3', 0, 0], ['4', 0, 0], ['5', 0, 0], ['6', 0, 0]]
+item = 0
 for row in lista:
     sumatoria = 0
     for key, value in datos.items():
@@ -46,6 +47,8 @@ for row in lista:
         sumatoria = 8
     distritos[int(row[1]) - 1][1] += 1
     distritos[int(row[1]) - 1][2] += sumatoria
+    lista[item].append(sumatoria)
+    item += 1
 
 dateStart = lista[0][0]
 dateEnd = lista[len(lista) - 1][0]
@@ -156,12 +159,16 @@ while numberRows < 1 or numberRows > (len(lista) - 1):
     except Exception:
         print "\nDato no aceptable. Intentelo de nuevo."
 
+print "\n"
+
 i = 0
 for row in lista:
     if i < numberRows and (int(row[1]) == districtNumber or districtNumber == 0) and \
     (row[0] >= dateStart and row[0] <= dateEnd):
         print row
         i += 1
+
+print "\n"
 
 for row in distritos:
     print row
