@@ -38,7 +38,7 @@ def readFile(fileName):
 				while True:
 					try:
 						os.system("cls")
-						victimRace = input("Raza de la victica (0, 1, 2, 3, 4, 5, 6): ")
+						victimRace = input("Raza de la victima (0, 1, 2, 3, 4, 5, 6): ")
 						suspectRace = input("Raza del sospechoso (0, 1, 2, 3, 4, 5, 6): ")
 						if (victimRace >= 0 and victimRace <= 6) and (suspectRace >= 0 and suspectRace <= 6):
 							break
@@ -139,4 +139,4 @@ def readFile(fileName):
     except Exception:
         print "No existe el archivo " + fileName + " en el directorio."
 
-readFile('Test.csv')
+readFile('crime_sf.csv')
