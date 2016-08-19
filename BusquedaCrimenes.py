@@ -33,9 +33,8 @@ def readData(fileName):
 readDictionary('words.csv')
 readData('crimes.csv')
 
-#Lista con los distritos. ['Distrito', CantidadDeCrimenes, PromedioDeGravedadDeCrimenes]
-distritos = [['1', 0, 0], ['2', 0, 0], ['3', 0, 0], ['4', 0, 0], ['5', 0, 0], ['6', 0, 0]]
-item = 0
+distritos = [['1', 0, 0, 0], ['2', 0, 0, 0], ['3', 0, 0, 0], ['4', 0, 0, 0], ['5', 0, 0, 0], ['6', 0, 0, 0]]
+'''
 for row in lista:
     sumatoria = 0
     for key, value in datos.items():
@@ -49,7 +48,7 @@ for row in lista:
     distritos[int(row[1]) - 1][2] += sumatoria
     lista[item].append(sumatoria)
     item += 1
-
+'''
 dateStart = lista[0][0]
 dateEnd = lista[len(lista) - 1][0]
 
@@ -57,7 +56,7 @@ dateEnd = lista[len(lista) - 1][0]
 dateNeed = ""
 while "S" not in dateNeed and "N" not in dateNeed:
     try:
-        dateNeed = raw_input("Desea hacer una busqueda en base a fechas? (S/N): ")
+        dateNeed = raw_input("Desea hacer una busqueda en base a fechas? (S/N): ").upper()
         if "S" not in dateNeed and "N" not in dateNeed:
             print "\nDato no aceptable. Intentelo de nuevo."
     except Exception as e:
@@ -132,7 +131,7 @@ if dateNeed == "S":
 districtNeed = ""
 while "S" not in districtNeed and "N" not in districtNeed:
     try:
-        districtNeed = raw_input("Desea hacer una busqueda en base a algun distrito? (S/N): ")
+        districtNeed = raw_input("Desea hacer una busqueda en base a algun distrito? (S/N): ").upper()
         if "S" not in districtNeed and "N" not in districtNeed:
             print "\nDato no aceptable. Intentelo de nuevo."
     except Exception:
@@ -161,14 +160,29 @@ while numberRows < 1 or numberRows > (len(lista) - 1):
 
 print "\n"
 
+print "[Fecha, Distrito, Crimen, Gravedad]"
+
 i = 0
 for row in lista:
     if i < numberRows and (int(row[1]) == districtNumber or districtNumber == 0) and \
     (row[0] >= dateStart and row[0] <= dateEnd):
-        print row
+        sumatoria = 0
+        for key, value in datos.items():
+            if key in row[2]:
+                sumatoria += int(value)
+        if sumatoria < 1:
+            sumatoria = 1
+        if sumatoria > 8:
+            sumatoria = 8
+        distritos[int(row[1]) - 1][1] += 1
+        distritos[int(row[1]) - 1][2] += sumatoria
+        row.append(sumatoria)
         i += 1
+        print row
 
 print "\n"
 
 for row in distritos:
-    print row
+    if int(row[0]) == districtNumber or districtNumber == 0:
+        row[3] = float(row[2]) / float(row[1])
+        print "El distrito " + row[0] + " tiene un promedio de gravedad %0.4f" % row[3]
