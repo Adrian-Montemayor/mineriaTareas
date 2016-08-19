@@ -23,6 +23,11 @@ def readData(fileName):
             try:
                 reader = csv.reader(csvfile)
                 for row in reader:
+                    if len(row[0]) < 16:
+                        str1 = row[0][:5]
+                        str2 = row[0][7:len(row[0])]
+
+                        row[0] = "0" + str1 + "2006" + str2
                     lista.append(row)
             except Exception as e:
                 print e
