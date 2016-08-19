@@ -30,25 +30,22 @@ def readData(fileName):
         print "No existe el archivo " + fileName + " en el directorio."
         sys.exit(0)
 
+#Toma de una lista y te regresa la cantidad de crimenes de la siguientes gravedad para la transicion
+def getNextSeverity(row, nextSev):
+    numberCrimes = 0  
+    while row[3] < nextSev-1:
+        row[1] += 1
+        row[2] += nextSev
+        row[3] = float(row[2]) / float(row[1])
+        numberCrimes += 1
+        #print row #visualizar transicion
+    return numberCrimes
+
 readDictionary('words.csv')
 readData('crimes.csv')
 
 distritos = [['1', 0, 0, 0], ['2', 0, 0, 0], ['3', 0, 0, 0], ['4', 0, 0, 0], ['5', 0, 0, 0], ['6', 0, 0, 0]]
-'''
-for row in lista:
-    sumatoria = 0
-    for key, value in datos.items():
-        if key in row[2]:
-            sumatoria += int(value)
-    if sumatoria < 1:
-        sumatoria = 1
-    if sumatoria > 8:
-        sumatoria = 8
-    distritos[int(row[1]) - 1][1] += 1
-    distritos[int(row[1]) - 1][2] += sumatoria
-    lista[item].append(sumatoria)
-    item += 1
-'''
+
 dateStart = lista[0][0]
 dateEnd = lista[len(lista) - 1][0]
 
@@ -186,3 +183,12 @@ for row in distritos:
     if int(row[0]) == districtNumber or districtNumber == 0:
         row[3] = float(row[2]) / float(row[1])
         print "El distrito " + row[0] + " tiene un promedio de gravedad %0.4f" % row[3]
+
+print "\n"
+
+for row in distritos:
+    if int(row[0]) == districtNumber or districtNumber == 0:
+        nextSeveri = int(row[3]%2) + int(row[3]) + 2
+        nCrimes = getNextSeverity(row, nextSeveri)
+        print "La cantidad de crimenes para aumentar el promedio de la gravedad del distrito "+ row[0] +" a gravedad " + \
+        str(nextSeveri-1)+ " es: " + str(nCrimes) + " crimenes."
