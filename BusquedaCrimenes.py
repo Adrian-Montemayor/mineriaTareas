@@ -31,9 +31,9 @@ def readData(fileName):
         sys.exit(0)
 
 #Toma de una lista y te regresa la cantidad de crimenes de la siguientes gravedad para la transicion
-def getNextSeverity(row, nextSev): 
-    numberCrimes = 0  
-    while row[3] < nextSev-1:
+def getNextSeverity(row, nextSev):
+    numberCrimes = 0
+    while row[3] < nextSev - 1:
         row[1] += 1
         row[2] += nextSev
         row[3] = float(row[2]) / float(row[1])
@@ -43,15 +43,14 @@ def getNextSeverity(row, nextSev):
 
 #Toma de una lista y te regresa la cantidad de crimenes de la previa gravedad para la transicion
 def getPreviousSeverity(row, prevSev):
-    numberCrimes = 0  
-    while row[3] > prevSev + 1:
+    numberCrimes = 0
+    while row[3] >= prevSev + 2:
         row[1] += 1
         row[2] += prevSev
         row[3] = float(row[2]) / float(row[1])
         numberCrimes += 1
         #print row #visualizar transicion
     return numberCrimes
-
 
 readDictionary('words.csv')
 readData('crimes.csv')
@@ -193,37 +192,34 @@ print "\n"
 
 for row in distritos:
     if int(row[0]) == districtNumber or districtNumber == 0:
-        row[3] = float(row[2]) / float(row[1])
-        print "El distrito " + row[0] + " tiene un promedio de gravedad %0.4f" % row[3]
+        try:
+            row[3] = float(row[2]) / float(row[1])
+            print "El distrito " + row[0] + " tiene un promedio de gravedad %0.4f" % row[3]
+        except Exception:
+            print "El distrito " + row[0] + " no presenta registros en la seleccion actual"
 
-print "\n"
-
-
+print "\n---TRANSICIONES---\n"
 
 #Calcular transicion proxima gravedad
 for row in distritos:
-    if int(row[0]) == districtNumber or districtNumber == 0:
-        org1 = row[1]
-        org2 = row[2]
-        org3 = row[3]
-        nextSeveri = int(row[3]%2) + int(row[3]) + 2
-        nCrimes = getNextSeverity(row, nextSeveri)
-        print "La cantidad de crimenes para aumentar el promedio de la gravedad del distrito "+ row[0] +" a gravedad " + \
-        str(nextSeveri-1)+ " es: " + str(nCrimes) + " crimenes de gravedad "+str(nextSeveri-1)+"."
-        row[1] = org1
-        row[2] = org2
-        row[3] = org3
+    if (int(row[0]) == districtNumber or districtNumber == 0) and row[3] != 0:
+        if row[3] <= 7:
+            org1, org2, org3 = row[1], row[2], row[3]
+            nextSeveri = int(row[3] % 2) + int(row[3]) + 2
+            nCrimes = getNextSeverity(row, nextSeveri)
+            print "Distrito " + row[0] + " a gravedad " + \
+            str(nextSeveri - 1) + ": " + str(nCrimes) + " crimenes de gravedad " + str(nextSeveri)
+            row[1], row[2], row[3] = org1, org2, org3
 
 print "\n"
 
 #Calcular transicion gravedad previa
 for row in distritos:
-    if int(row[0]) == districtNumber or districtNumber == 0:
-        if row[3] > 2:
-            prevSeveri = int(row[3]%2) + int(row[3]) -3
-            #print "Promedio:" + str(row[3]) + " --- residuo:" + str(int(row[3]%2))+ " --- promedio -3: " + str(int(row[3]) -3)
+    if (int(row[0]) == districtNumber or districtNumber == 0) and row[3] != 0:
+        if row[3] >= 3:
+            prevSeveri = int(row[3] % 2) + int(row[3]) - 3
             nCrimes = getPreviousSeverity(row, prevSeveri)
-            print "La cantidad de crimenes para bajar el promedio de la gravedad del distrito "+ row[0] +" a gravedad " + \
-            str(prevSeveri+1)+ " es: " + str(nCrimes) + " crimenes de gravedad " + str(prevSeveri) +"."
+            print "Distrito " + row[0] + " a gravedad " + \
+            str(prevSeveri + 1) + ": " + str(nCrimes) + " crimenes de gravedad " + str(prevSeveri)
         else:
-            print "El distrito " + row[0] + " esta en la gravedad mas baja."
+            print "Distrito " + row[0] + " esta en la gravedad mas baja"
