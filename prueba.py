@@ -2,12 +2,20 @@ import csv
 import os
 dateFirstRow = 0
 dateLastRow = 0
+firstDateSelect = 0 
+lastDateSelect = 0
+lista = list()
+listVR = []
+listSR = []
+listVG = []
+listSG = []
 
 def readFile(fileName):
 	try:
 		with open(fileName, 'rb') as csvfile:
 			try:
 				reader = csv.reader(csvfile)
+				global lista
 				lista = list(reader)
 				#Fecha inicial
 				global dateFirstRow
@@ -28,7 +36,9 @@ def readYears():
 	print "Rango de fechas (" + str(dateFirstRow) +" - "+ str(dateLastRow)+")."
 	while True:
 		try:
+			global firstDateSelect
 			firstDateSelect = input("Fecha inicial: ")
+			global lastDateSelect
 			lastDateSelect = input("Fecha Final: ")
 			#Validar que las fecha inicial no sea mayor ala final
 			if firstDateSelect > lastDateSelect:
@@ -52,6 +62,7 @@ def readRace():
 	while True:
 		try:
 			victimRace = input("Raza de la victima (1, 2, 3, 4, 5, 6): ")
+			global listVR
 			listVR = []
 			if isinstance(victimRace, tuple):
 				if len(victimRace) <= 6:
@@ -82,6 +93,7 @@ def readRace():
 	while True:
 		try:
 			suspectRace = input("Raza del sospechoso (1, 2, 3, 4, 5, 6): ")
+			global listSR
 			listSR = []
 			if isinstance(suspectRace, tuple):
 				if len(suspectRace) <= 6:
@@ -116,6 +128,7 @@ def readGenre():
 	while True:
 		try:
 			victimGenre = input("Genero de la victima (1, 2, 3, 4, 5, 6): ")
+			global listVG
 			listVG = []
 			if isinstance(victimGenre, tuple):
 				if len(victimGenre) <= 6:
@@ -130,9 +143,9 @@ def readGenre():
 						break
 				else: 
 					print "No puede elegir mas de 6 valores a la vez."
-			elif isinstance(victimRace, int):
-				if (victimRace > 0 and victimRace <= 6):
-					listVG.append(victimRace)
+			elif isinstance(victimGenre, int):
+				if (victimGenre > 0 and victimGenre <= 6):
+					listVG.append(victimGenre)
 					#print listVG
 					break
 				else:
@@ -146,6 +159,7 @@ def readGenre():
 	while True:
 		try:
 			suspectGenre = input("Genero del sospechoso (1, 2, 3, 4, 5, 6): ")
+			global listSG
 			listSG = []
 			if isinstance(suspectGenre, tuple):
 				if len(suspectGenre) <= 6:
@@ -174,5 +188,16 @@ def readGenre():
 			print "No se puede. Intente nuevamente."
 	print listVG
 	print listSG
+	filtered()
 
+def filtered():
+	print "<!===============================================!>"
+	print "Anio inicial: " + firstDateSelect
+	print "Anio final: "+ lastDateSelect
+
+	for row in range(0,len(lista)):
+		if (lista[row][2] >= firstDateSelect) and (lista[row][2] <= lastDateSelect):
+			#if (lista[row][4] == victimRace or victimRace == "0") and (lista[row][9] == suspectRace or suspectRace == "0"):
+			#if lista[row][4] in listVR:
+			print lista[row]
 readFile('crime_sf.csv')
