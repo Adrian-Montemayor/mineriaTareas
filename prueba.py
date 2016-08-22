@@ -70,7 +70,7 @@ def readRace():
 					for i in victimRace:
 						if isinstance(i, int):
 							if (i > 0 and i <= 6):
-								listVR.append(i)
+								listVR.append(str(i))
 								j += 1
 								#print i
 					if len(listVR) != 0:
@@ -79,7 +79,7 @@ def readRace():
 					print "No puede elegir mas de 6 valores a la vez."
 			elif isinstance(victimRace, int):
 				if (victimRace > 0 and victimRace <= 6):
-					listVR.append(victimRace)
+					listVR.append(str(victimRace))
 					#print listVR
 					break
 				else:
@@ -101,7 +101,7 @@ def readRace():
 					for i in suspectRace:
 						if isinstance(i, int):
 							if (i > 0 and i <= 6):
-								listSR.append(i)
+								listSR.append(str(i))
 								j += 1
 								#print i
 					if len(listSR) != 0:
@@ -110,7 +110,7 @@ def readRace():
 					print "No puede elegir mas de 6 valores a la vez."
 			elif isinstance(suspectRace, int):
 				if (suspectRace > 0 and suspectRace <= 6):
-					listSR.append(suspectRace)
+					listSR.append(str(suspectRace))
 					#print listSR
 					break
 				else:
@@ -136,7 +136,7 @@ def readGenre():
 					for i in victimGenre:
 						if isinstance(i, int):
 							if (i > 0 and i <= 6):
-								listVG.append(i)
+								listVG.append(str(i))
 								j += 1
 								#print i
 					if len(listVG) != 0:
@@ -145,7 +145,7 @@ def readGenre():
 					print "No puede elegir mas de 6 valores a la vez."
 			elif isinstance(victimGenre, int):
 				if (victimGenre > 0 and victimGenre <= 6):
-					listVG.append(victimGenre)
+					listVG.append(str(victimGenre))
 					#print listVG
 					break
 				else:
@@ -167,7 +167,7 @@ def readGenre():
 					for i in suspectGenre:
 						if isinstance(i, int):
 							if (i > 0 and i <= 6):
-								listSG.append(i)
+								listSG.append(str(i))
 								j += 1
 								#print i
 					if len(listSG) != 0:
@@ -176,7 +176,7 @@ def readGenre():
 					print "No puede elegir mas de 6 valores a la vez."
 			elif isinstance(suspectGenre, int):
 				if (suspectGenre > 0 and suspectGenre <= 6):
-					listSG.append(suspectGenre)
+					listSG.append(str(suspectGenre))
 					#print listSG
 					break
 				else:
@@ -194,10 +194,11 @@ def filtered():
 	print "<!===============================================!>"
 	print "Anio inicial: " + firstDateSelect
 	print "Anio final: "+ lastDateSelect
-
+	t = 0
 	for row in range(0,len(lista)):
 		if (lista[row][2] >= firstDateSelect) and (lista[row][2] <= lastDateSelect):
-			#if (lista[row][4] == victimRace or victimRace == "0") and (lista[row][9] == suspectRace or suspectRace == "0"):
-			#if lista[row][4] in listVR:
-			print lista[row]
+			if lista[row][4] in listVR and lista[row][9] in listSR:
+				if lista[row][6] in listVG and lista[row][11] in listSG:
+					t += 1
+	print t
 readFile('crime_sf.csv')
