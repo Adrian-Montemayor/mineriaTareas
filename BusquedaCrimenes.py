@@ -25,9 +25,10 @@ def readData(fileName):
                 for row in reader:
                     if len(row[0]) < 16:
                         str1 = row[0][:5]
-                        str2 = row[0][7:len(row[0])]
-
-                        row[0] = "0" + str1 + "2006" + str2
+                        str2 = row[0][8:len(row[0])]
+                        if len(str2) < 5:
+                            str2 = "0" + row[0][8:len(row[0])]
+                        row[0] = "0" + str1 + "2006 " + str2
                     lista.append(row)
             except Exception as e:
                 print e
@@ -162,14 +163,24 @@ if districtNeed == "S":
         except Exception:
             print "\nDato no aceptable. Intentelo de nuevo."
 
-numberRows = None
-while numberRows < 1 or numberRows > (len(lista) - 1):
-    try:
-        numberRows = int(input("Cuantos datos desea visualizar (" + str(len(lista) - 1) + " registros en total): "))
-        if numberRows < 1 or numberRows > (len(lista) - 1):
+numeroRegistros = 0
+for row in lista:
+    if (int(row[1]) == districtNumber or districtNumber == 0) and \
+    (row[0] >= dateStart and row[0] <= dateEnd):
+        numeroRegistros += 1
+
+numberRows = 0
+if numeroRegistros == 0:
+    print "\nNo existen registros en base a la seleccion actual."
+    sys.exit(0)
+else:
+    while numberRows < 1 or numberRows > numeroRegistros:
+        try:
+            numberRows = int(input("Cuantos datos desea visualizar (" + str(numeroRegistros) + " registros en total): "))
+            if numberRows < 1 or numberRows > numeroRegistros:
+                print "\nDato no aceptable. Intentelo de nuevo."
+        except Exception:
             print "\nDato no aceptable. Intentelo de nuevo."
-    except Exception:
-        print "\nDato no aceptable. Intentelo de nuevo."
 
 print "\n"
 
@@ -215,7 +226,8 @@ for row in distritos:
             print "Distrito " + row[0] + " a gravedad " + \
             str(nextSeveri - 1) + ": " + str(nCrimes) + " crimenes de gravedad " + str(nextSeveri)
             row[1], row[2], row[3] = org1, org2, org3
-
+        else:
+            print "Distrito " + row[0] + " esta en la gravedad mas alta."
 print "\n"
 
 #Calcular transicion gravedad previa
@@ -227,4 +239,4 @@ for row in distritos:
             print "Distrito " + row[0] + " a gravedad " + \
             str(prevSeveri + 1) + ": " + str(nCrimes) + " crimenes de gravedad " + str(prevSeveri)
         else:
-            print "Distrito " + row[0] + " esta en la gravedad mas baja"
+            print "Distrito " + row[0] + " esta en la gravedad mas baja."
