@@ -37,9 +37,9 @@ def readYears():
 	while True:
 		try:
 			global firstDateSelect
-			firstDateSelect = input("Fecha inicial: ")
+			firstDateSelect = input("Anio inicial: (Ej. 1994) ")
 			global lastDateSelect
-			lastDateSelect = input("Fecha Final: ")
+			lastDateSelect = input("Anio Final: (Ej. 1994) ")
 			#Validar que las fecha inicial no sea mayor ala final
 			if firstDateSelect > lastDateSelect:
 				os.system("cls")
@@ -61,6 +61,7 @@ def readYears():
 def readRace():	
 	while True:
 		try:
+			print "\nIngrese los numeros separados por comas."
 			victimRace = input("Raza de la victima (1, 2, 3, 4, 5, 6): ")
 			global listVR
 			listVR = []
@@ -72,7 +73,8 @@ def readRace():
 							if (i > 0 and i <= 6):
 								listVR.append(str(i))
 								j += 1
-								#print i
+							else:
+								print "El siguiente valor " + str(i) + " no esta dentro del rango."
 					if len(listVR) != 0:
 						break
 				else: 
@@ -103,7 +105,8 @@ def readRace():
 							if (i > 0 and i <= 6):
 								listSR.append(str(i))
 								j += 1
-								#print i
+							else:
+								print "El siguiente valor " + str(i) + " no esta dentro del rango."
 					if len(listSR) != 0:
 						break
 				else: 
@@ -125,6 +128,7 @@ def readRace():
 def readGenre():	
 	while True:
 		try:
+			print "\nIngrese los numeros separados por comas."
 			victimGenre = input("Genero de la victima (1, 2, 3, 4, 5, 6): ")
 			global listVG
 			listVG = []
@@ -136,7 +140,8 @@ def readGenre():
 							if (i > 0 and i <= 6):
 								listVG.append(str(i))
 								j += 1
-								#print i
+							else:
+								print "El siguiente valor " + str(i) + " no esta dentro del rango."
 					if len(listVG) != 0:
 						break
 				else: 
@@ -167,7 +172,8 @@ def readGenre():
 							if (i > 0 and i <= 6):
 								listSG.append(str(i))
 								j += 1
-								#print i
+							else:
+								print "El siguiente valor " + str(i) + " no esta dentro del rango."
 					if len(listSG) != 0:
 						break
 				else: 
@@ -187,9 +193,8 @@ def readGenre():
 	filtered()
 
 def filtered():
-	print "<!===============================================!>"
-	print "Anio inicial: " + firstDateSelect
-	print "Anio final: "+ lastDateSelect
+	print "\n<!===============================================!>\n"
+	
 	i=0
 	Vhombres=0
 	Vmujeres=0
@@ -212,7 +217,14 @@ def filtered():
 					#print "Year: " + lista[row][2] + " VRaza: " + lista[row][4] + " SRaza: " + lista[row][9] + " VGenero: " + lista[row][6] + " SGenero: " + lista[row][11] +"\n"
 					print "[" + lista[row][2] + ", Name: " + lista[row][3] + ", RV: " + lista[row][4] + ", GV: " + lista[row][6] + ", RS: " + lista[row][9] + ", GS: " + lista[row][11] + ", Weapon: " + lista[row][15] +"]"
 
-	print "<!===============================================!>"
+	print "\n<!===============================================!>\n"
+	print "Anio inicial: " + firstDateSelect
+	print "Anio final: "+ lastDateSelect
+	print "Raza de la victima: "+ str(listVR)
+	print "Raza del sospechoso: "+ str(listSR)
+	print "Genero de la victima: "+ str(listVG)
+	print "Genero del sospechoso: "+ str(listSG)	
+	print "\n<!===============================================!>\n"
 	if int(i) > 0:
 		print "Total de registros: " + str(i)
 		try:
